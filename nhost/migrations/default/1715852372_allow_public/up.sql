@@ -1,2 +1,2 @@
-GRANT SELECT ON "Pumps" IN SCHEMA public TO public;
+GRANT SELECT ON public."Pumps" TO public;
 
