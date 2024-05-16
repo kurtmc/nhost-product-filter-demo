@@ -38,6 +38,7 @@ var minPower = 0;
 var minWeight = 0;
 
 const pumps = ref([])
+
 async function getPumps() {
   const { data } = await nhost.graphql.request(getPumpsQuery)
   pumps.value = data.Pumps
@@ -88,8 +89,9 @@ async function updatePumps() {
     </table>
    </div>
   <p></p>
-  <p>Minimum power</p>
   <!-- https://nightcatsama.github.io/vue-slider-component/#/basics/simple -->
+        <br/>
+        <br/>
   
    <div>
     <table>
@@ -172,5 +174,12 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+}
+
+table {
+  border: 2px solid rgb(140 140 140);
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
 }
 </style>
