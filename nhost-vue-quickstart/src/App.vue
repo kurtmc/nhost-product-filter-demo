@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import VueSlider from 'vue-slider-component'
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 
@@ -8,37 +9,100 @@ import { nhost } from "./lib/nhost"
 
 const getPumpsQuery = `
 query GetPumps {
-  Pumps(where: {Power: {_gte: "0", _lte: "9999"}, Weight: {_gte: "0", _lte: "9999"}}) {
-    FlowRate
+  Pumps(where: {Power: {_gte: "0", _lte: "9999"}, Weight: {_gte: "0", _lte: "9999"}, FlowRate: {_gte: "0", _lte: "9999"}}) {
     ID
     Power
     ProductName
     Weight
+    FlowRate
   }
 }
-
 `;
+
+function getQuery(minFlowRate: int, minPower: int, minWeight: int) {
+return `
+query GetPumps {
+  Pumps(where: {Power: {_gte: "${minPower}", _lte: "9999"}, Weight: {_gte: "${minWeight}", _lte: "9999"}, FlowRate: {_gte: "${minFlowRate}", _lte: "9999"}}) {
+    ID
+    Power
+    ProductName
+    Weight
+    FlowRate
+  }
+}
+`;
+}
+
+var minFlowRate = 0;
+var minPower = 0;
+var minWeight = 0;
 
 const pumps = ref([])
 async function getPumps() {
   const { data } = await nhost.graphql.request(getPumpsQuery)
-  pumps.value = data.pumps
+  pumps.value = data.Pumps
 }
 
 onMounted(() => {
   getPumps()
 })
 
+async function updatePumps() {
+  const { data } = await nhost.graphql.request(getQuery(minFlowRate, minPower, minWeight))
+  pumps.value = data.Pumps
+}
+
+//async function updatePumps(minFlowRate) {
+//  console.log("minFlowRate")
+//  console.log(minFlowRate)
+//
+//  //const { data } = await nhost.graphql.request(getQuery(minFlowRate))
+//  //pumps.value = data.Pumps
+//}
+
 </script>
 
 <template>
-
-
    <div>
     <table>
+        <tr>
+          <td>Minimum flow rate</td>
+        </tr>
+        <tr>
+          <td><vue-slider v-model="minFlowRate" :enable-cross="false" @change="updatePumps"></vue-slider></td>
+        </tr>
+        <br/>
+        <tr>
+          <td>Minimum power</td>
+        </tr>
+        <tr>
+          <td><vue-slider v-model="minPower" :enable-cross="false" @change="updatePumps"></vue-slider></td>
+        </tr>
+        <br/>
+        <tr>
+          <td>Minimum weight</td>
+        </tr>
+        <tr>
+          <td><vue-slider v-model="minWeight" :enable-cross="false" @change="updatePumps"></vue-slider></td>
+        </tr>
+    </table>
+   </div>
+  <p></p>
+  <p>Minimum power</p>
+  <!-- https://nightcatsama.github.io/vue-slider-component/#/basics/simple -->
+  
+   <div>
+    <table>
+      <thead>
+        <th>Name</th>
+        <th>Flow Rate</th>
+        <th>Power</th>
+        <th>Weight</th>
+      </thead>
       <tbody>
         <tr v-for="pump in pumps" :key="pump.id">
           <td>{{ pump.ProductName }}</td>
+          <td>{{ pump.FlowRate }}</td>
           <td>{{ pump.Power }}</td>
           <td>{{ pump.Weight }}</td>
         </tr>
