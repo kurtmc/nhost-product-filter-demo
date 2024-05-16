@@ -1,0 +1,23 @@
+- name: allowed-queries
+  definition:
+    queries:
+      - name: GetPumps
+        query: |
+          query MyQuery {
+            Pumps {
+              Power
+              ProductName
+              Weight
+              ID
+            }
+          }
+      - name: getallpumps
+        query: |
+          query MyQuery {
+            Pumps {
+              Power
+              ProductName
+              Weight
+              ID
+            }
+          }

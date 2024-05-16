@@ -1,0 +1,18 @@
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: getallpumps
+  methods:
+    - GET
+  name: getallpumps
+  url: getallpumps
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: GetPumps
+  methods:
+    - GET
+  name: GetPumps
+  url: getpumps
