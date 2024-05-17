@@ -102,7 +102,7 @@ async function updatePumps() {
         <th>Weight</th>
       </thead>
       <tbody>
-        <tr v-for="pump in pumps" :key="pump.id">
+        <tr v-for="pump in pumps" :key="pump.ID">
           <td>{{ pump.ProductName }}</td>
           <td>{{ pump.FlowRate }}</td>
           <td>{{ pump.Power }}</td>

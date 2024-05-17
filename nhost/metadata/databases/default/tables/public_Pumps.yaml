@@ -1,3 +1,10 @@
 table:
   name: Pumps
   schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns: [ID, ProductName, Power, FlowRate, Weight]
+  - role: user
+    permission:
+      columns: [ID, ProductName, Power, FlowRate, Weight]
