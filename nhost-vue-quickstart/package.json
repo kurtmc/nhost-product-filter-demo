@@ -11,7 +11,7 @@
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
-    "s3-sync": "aws --profile personal s3 sync ./dist/ s3://kurt-web-demo/"
+    "s3-sync": "aws --profile personal s3 sync ./dist/ s3://kurt-web-demo/ && aws --profile personal cloudfront create-invalidation --distribution-id ED3KZ17B7Z8SV  --paths '/*'"
   },
   "dependencies": {
     "@nhost/vue": "^2.6.0",
