@@ -15,6 +15,7 @@ query GetPumps {
     ProductName
     Weight
     FlowRate
+    Submersible
   }
 }
 `;
@@ -28,6 +29,7 @@ query GetPumps {
     ProductName
     Weight
     FlowRate
+    Submersible
   }
 }
 `;
@@ -36,6 +38,7 @@ query GetPumps {
 var minFlowRate = 0;
 var minPower = 0;
 var minWeight = 0;
+var submersible = false;
 
 const pumps = ref([])
 
@@ -64,56 +67,43 @@ async function updatePumps() {
 </script>
 
 <template>
-   <div>
-    <table>
-        <tr>
-          <td>Minimum flow rate</td>
-        </tr>
-        <tr>
-          <td><vue-slider v-model="minFlowRate" :enable-cross="false" @change="updatePumps"></vue-slider></td>
-        </tr>
-        <br/>
-        <tr>
-          <td>Minimum power</td>
-        </tr>
-        <tr>
-          <td><vue-slider v-model="minPower" :enable-cross="false" @change="updatePumps"></vue-slider></td>
-        </tr>
-        <br/>
-        <tr>
-          <td>Minimum weight</td>
-        </tr>
-        <tr>
-          <td><vue-slider v-model="minWeight" :enable-cross="false" @change="updatePumps"></vue-slider></td>
-        </tr>
-    </table>
-   </div>
-  <p></p>
-  <!-- https://nightcatsama.github.io/vue-slider-component/#/basics/simple -->
-        <br/>
-        <br/>
-  
-   <div>
-    <table>
-      <thead>
-        <th>Name</th>
-        <th>Flow Rate</th>
-        <th>Power</th>
-        <th>Weight</th>
-      </thead>
-      <tbody>
-        <tr v-for="pump in pumps" :key="pump.ID">
-          <td>{{ pump.ProductName }}</td>
-          <td>{{ pump.FlowRate }}</td>
-          <td>{{ pump.Power }}</td>
-          <td>{{ pump.Weight }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="container-fluid">
+    <div class="row align-items-start">
+      <div class="col-2">
+        <div class="card" style="width: 18rem;">
+          <div class="card-header">
+            Specifications
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><p>Minimum flow rate</p><vue-slider v-model="minFlowRate" :enable-cross="false" @change="updatePumps"></vue-slider></li>
+            <li class="list-group-item"><p>Minimum power</p><vue-slider v-model="minPower" :enable-cross="false" @change="updatePumps"></vue-slider></li>
+            <li class="list-group-item"><p>Minimum weight</p><vue-slider v-model="minWeight" :enable-cross="false" @change="updatePumps"></vue-slider></li>
+            <li class="list-group-item"><p>Submersible</p><input v-model="submersible" @change="updatePumps" type="checkbox"></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-12">
+      </div>
+      <div class="col-6" v-for="pump in pumps" :key="pump.ID">
+        <div class="card" style="width: 18rem;">
+          <img src="https://kagi.com/proxy/rLwWxiMnVNSS0wFK78id.jpg?c=DjRpTFMOWGZtpUo5aJA5fHKmHsAjTiteSsH5_h_u0NDAMViUWje_1WrkIo_5mvnI7TCRTROD7ao8Wm-WoG-MAMulZkiLSjd63vshskBq-vMRnsf7cgh_MQutSXqWqn_h" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{ pump.ProductName }}</h5>
+            <p class="card-text">Flow rate: {{ pump.FlowRate }}</p>
+            <p class="card-text">Power: {{ pump.Power }}</p>
+            <p class="card-text">Weight: {{ pump.Weight }}</p>
+            <p v-if="pump.Submersible" class="card-text">Submersible: yes</p>
+            <p v-else class="card-text">Submersible: no</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+@import '../node_modules/bootstrap/dist/css/bootstrap.css';
+
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -177,9 +167,19 @@ nav a:first-of-type {
 }
 
 table {
+  padding: 16px;
   border: 2px solid rgb(140 140 140);
   font-family: sans-serif;
   font-size: 0.8rem;
   letter-spacing: 1px;
+}
+
+.card {
+  border: 2px solid rgb(140 140 140);
+  border-radius: 10px;
+  margin: 20px;
+}
+.card-img-top {
+  border-radius: 8px 8px 0px 0px;
 }
 </style>
