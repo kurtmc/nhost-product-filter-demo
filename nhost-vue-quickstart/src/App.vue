@@ -20,11 +20,11 @@ query GetPumps {
 }
 `;
 
-function getQuery(minFlowRate: int, minPower: int, minWeight: int, submersible: boolean) {
+function getQuery(flowRate: int[], power: int[], weight: int[], submersible: boolean) {
 console.log(submersible)
 return `
 query GetPumps {
-  Pumps(where: {Power: {_gte: "${minPower}", _lte: "9999"}, Weight: {_gte: "${minWeight}", _lte: "9999"}, FlowRate: {_gte: "${minFlowRate}", _lte: "9999"}, submersible: {_eq: ${submersible}}}) {
+  Pumps(where: {Power: {_gte: "${power[0]}", _lte: "${power[1]}"}, Weight: {_gte: "${weight[0]}", _lte: "${weight[1]}"}, FlowRate: {_gte: "${flowRate[0]}", _lte: "${flowRate[1]}"}, submersible: {_eq: ${submersible}}}) {
     ID
     Power
     ProductName
@@ -36,9 +36,9 @@ query GetPumps {
 `;
 }
 
-var minFlowRate = 0;
-var minPower = 0;
-var minWeight = 0;
+var flowRate = [0, 1000];
+var power = [0, 1000];
+var weight = [0, 1000];
 var submersible = false;
 
 const pumps = ref([])
@@ -53,7 +53,8 @@ onMounted(() => {
 })
 
 async function updatePumps() {
-  const { data } = await nhost.graphql.request(getQuery(minFlowRate, minPower, minWeight, submersible))
+  console.log(flowRate)
+  const { data } = await nhost.graphql.request(getQuery(flowRate, power, weight, submersible))
   pumps.value = data.Pumps
 }
 
@@ -62,11 +63,11 @@ function marks(val) {
 }
 
 
-//async function updatePumps(minFlowRate) {
-//  console.log("minFlowRate")
-//  console.log(minFlowRate)
+//async function updatePumps(flowRate) {
+//  console.log("flowRate")
+//  console.log(flowRate)
 //
-//  //const { data } = await nhost.graphql.request(getQuery(minFlowRate))
+//  //const { data } = await nhost.graphql.request(getQuery(flowRate))
 //  //pumps.value = data.Pumps
 //}
 
@@ -81,9 +82,9 @@ function marks(val) {
             Specifications
           </div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"><p>Minimum flow rate</p><vue-slider v-model="minFlowRate" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks"></vue-slider></li>
-            <li class="list-group-item"><p>Minimum power</p><vue-slider v-model="minPower" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks"></vue-slider></li>
-            <li class="list-group-item"><p>Minimum weight</p><vue-slider v-model="minWeight" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks"></vue-slider></li>
+            <li class="list-group-item"><p>Flow rate</p><vue-slider v-model="flowRate" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks" ></vue-slider></li>
+            <li class="list-group-item"><p>Power</p><vue-slider v-model="power" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks"></vue-slider></li>
+            <li class="list-group-item"><p>Weight</p><vue-slider v-model="weight" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks"></vue-slider></li>
             <li class="list-group-item"><p>Submersible</p><input v-model="submersible" @change="updatePumps" type="checkbox"></li>
           </ul>
         </div>
