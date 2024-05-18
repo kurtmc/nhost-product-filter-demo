@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import VueSlider from 'vue-slider-component'
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 
 import { ref, onMounted } from 'vue'
 import { nhost } from "./lib/nhost"
@@ -63,35 +61,27 @@ function marks(val) {
 }
 
 
-//async function updatePumps(flowRate) {
-//  console.log("flowRate")
-//  console.log(flowRate)
-//
-//  //const { data } = await nhost.graphql.request(getQuery(flowRate))
-//  //pumps.value = data.Pumps
-//}
 
 </script>
 
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid" style="width: 100%;">
+    <div id="specifications" class="card" style="width: 18rem;">
+      <div class="card-header">
+        Specifications
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><p>Flow rate</p><vue-slider v-model="flowRate" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks" ></vue-slider></li>
+        <li class="list-group-item"><p>Power</p><vue-slider v-model="power" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks"></vue-slider></li>
+        <li class="list-group-item"><p>Weight</p><vue-slider v-model="weight" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks"></vue-slider></li>
+        <li class="list-group-item"><p>Submersible</p><input v-model="submersible" @change="updatePumps" type="checkbox"></li>
+      </ul>
+    </div>
+
     <div class="row align-items-start">
-      <div class="col-2">
-        <div class="card" style="width: 18rem;">
-          <div class="card-header">
-            Specifications
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"><p>Flow rate</p><vue-slider v-model="flowRate" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks" ></vue-slider></li>
-            <li class="list-group-item"><p>Power</p><vue-slider v-model="power" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks"></vue-slider></li>
-            <li class="list-group-item"><p>Weight</p><vue-slider v-model="weight" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks"></vue-slider></li>
-            <li class="list-group-item"><p>Submersible</p><input v-model="submersible" @change="updatePumps" type="checkbox"></li>
-          </ul>
-        </div>
+      <div class="col-12" style="width: 2000px;">
       </div>
-      <div class="col-12">
-      </div>
-      <div class="col-12" v-for="pump in pumps" :key="pump.ID">
+      <div class="col-3 pump-col" v-for="pump in pumps" :key="pump.ID">
         <div class="card" style="width: 18rem;">
           <img src="https://kagi.com/proxy/rLwWxiMnVNSS0wFK78id.jpg?c=DjRpTFMOWGZtpUo5aJA5fHKmHsAjTiteSsH5_h_u0NDAMViUWje_1WrkIo_5mvnI7TCRTROD7ao8Wm-WoG-MAMulZkiLSjd63vshskBq-vMRnsf7cgh_MQutSXqWqn_h" class="card-img-top" alt="...">
           <div class="card-body">
@@ -146,6 +136,10 @@ nav a:first-of-type {
   border: 0;
 }
 
+.pump-col {
+  width: 100%;
+}
+
 @media (min-width: 1024px) {
   header {
     display: flex;
@@ -170,6 +164,15 @@ nav a:first-of-type {
 
     padding: 1rem 0;
     margin-top: 1rem;
+  }
+
+  #specifications {
+    position: fixed;
+    left: 1em;
+    top: 1em;
+  }
+  .pump-col {
+    width: 25%;
   }
 }
 
