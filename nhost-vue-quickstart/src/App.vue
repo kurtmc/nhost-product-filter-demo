@@ -34,6 +34,17 @@ query GetPumps {
 `;
 }
 
+async function getImageUrl(pumpSeries: string): string {
+  const { data } = await nhost.graphql.request(`query MyQuery {
+  files(where: {name: { _regex: "${pumpSeries}.*"}}) {
+    id
+    name
+  }
+}`)
+  const publicUrl = await nhost.storage.getPublicUrl({fileId: data.files[0].id})
+  return publicUrl
+}
+
 var flowRate = [0, 1000];
 var power = [0, 1000];
 var weight = [0, 1000];
@@ -43,6 +54,9 @@ const pumps = ref([])
 
 async function getPumps() {
   const { data } = await nhost.graphql.request(getPumpsQuery)
+  for (var pump of data.Pumps) {
+     pump.PublicUrl = await getImageUrl("VCL")
+  }
   pumps.value = data.Pumps
 }
 
@@ -51,8 +65,10 @@ onMounted(() => {
 })
 
 async function updatePumps() {
-  console.log(flowRate)
   const { data } = await nhost.graphql.request(getQuery(flowRate, power, weight, submersible))
+  for (var pump of data.Pumps) {
+     pump.PublicUrl = await getImageUrl("VCL")
+  }
   pumps.value = data.Pumps
 }
 
@@ -83,7 +99,7 @@ function marks(val) {
       </div>
       <div class="col-3 pump-col" v-for="pump in pumps" :key="pump.ID">
         <div class="card" style="width: 18rem;">
-          <img src="https://kagi.com/proxy/rLwWxiMnVNSS0wFK78id.jpg?c=DjRpTFMOWGZtpUo5aJA5fHKmHsAjTiteSsH5_h_u0NDAMViUWje_1WrkIo_5mvnI7TCRTROD7ao8Wm-WoG-MAMulZkiLSjd63vshskBq-vMRnsf7cgh_MQutSXqWqn_h" class="card-img-top" alt="...">
+          <img v-bind:src="pump.PublicUrl" class="card-img-top" alt="...">
           <div class="card-body">
             <h5 class="card-title">{{ pump.ProductName }}</h5>
             <p class="card-text">Flow rate: {{ pump.FlowRate }}</p>
