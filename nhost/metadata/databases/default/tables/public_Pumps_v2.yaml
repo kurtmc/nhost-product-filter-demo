@@ -1,0 +1,77 @@
+table:
+  name: Pumps_v2
+  schema: public
+configuration:
+  column_config:
+    CC/  STROKE:
+      custom_name: CC_STROKE
+    FLOAT SWITCH:
+      custom_name: FLOAT_SWITCH
+    FLOW L/H:
+      custom_name: FLOW_L_H
+    HEAD O RING EP:
+      custom_name: HEAD_O_RING_EP
+    HEAD O RING FP:
+      custom_name: HEAD_O_RING_FP
+    HEAD PP SEAL EP:
+      custom_name: HEAD_PP_SEAL_EP
+    HEAD PVDF SEAL EP:
+      custom_name: HEAD_PVDF_SEAL_EP
+    HEAD PVDF SEAL FP:
+      custom_name: HEAD_PVDF_SEAL_FP
+    INPUT TYPE:
+      custom_name: INPUT_TYPE
+    PRESSURE BAR:
+      custom_name: PRESSURE_BAR
+    PUMP HEAD CODE:
+      custom_name: PUMP_HEAD_CODE
+    PUMP SERIES:
+      custom_name: PUMP_SERIES
+    STROKE LENGTH ADJ:
+      custom_name: STROKE_LENGTH_ADJ
+    STROKE SPEED ADJ:
+      custom_name: STROKE_SPEED_ADJ
+    TUBE SIZE         ID X OD:
+      custom_name: TUBE_SIZE_ID_X_OD
+  custom_column_names:
+    CC/  STROKE: CC_STROKE
+    FLOAT SWITCH: FLOAT_SWITCH
+    FLOW L/H: FLOW_L_H
+    HEAD O RING EP: HEAD_O_RING_EP
+    HEAD O RING FP: HEAD_O_RING_FP
+    HEAD PP SEAL EP: HEAD_PP_SEAL_EP
+    HEAD PVDF SEAL EP: HEAD_PVDF_SEAL_EP
+    HEAD PVDF SEAL FP: HEAD_PVDF_SEAL_FP
+    INPUT TYPE: INPUT_TYPE
+    PRESSURE BAR: PRESSURE_BAR
+    PUMP HEAD CODE: PUMP_HEAD_CODE
+    PUMP SERIES: PUMP_SERIES
+    STROKE LENGTH ADJ: STROKE_LENGTH_ADJ
+    STROKE SPEED ADJ: STROKE_SPEED_ADJ
+    TUBE SIZE         ID X OD: TUBE_SIZE_ID_X_OD
+  custom_root_fields: {}
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - PRESSURE BAR
+        - CC/  STROKE
+        - FLOAT SWITCH
+        - FLOW L/H
+        - HEAD O RING EP
+        - HEAD O RING FP
+        - HEAD PP SEAL EP
+        - HEAD PVDF SEAL EP
+        - HEAD PVDF SEAL FP
+        - INPUT
+        - INPUT TYPE
+        - PUMP HEAD CODE
+        - PUMP SERIES
+        - STROKE LENGTH ADJ
+        - STROKE SPEED ADJ
+        - TUBE SIZE         ID X OD
+        - diaphragm
+        - model
+        - ID
+      filter: {}
+    comment: ""

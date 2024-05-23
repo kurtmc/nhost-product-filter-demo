@@ -4,9 +4,21 @@ table:
 select_permissions:
   - role: public
     permission:
-      columns: [ID, ProductName, Power, FlowRate, Weight, submersible]
+      columns:
+        - ID
+        - ProductName
+        - Power
+        - FlowRate
+        - Weight
+        - submersible
       filter: {}
   - role: user
     permission:
-      columns: [ID, ProductName, Power, FlowRate, Weight, submersible]
+      columns:
+        - ID
+        - ProductName
+        - Power
+        - FlowRate
+        - Weight
+        - submersible
       filter: {}
