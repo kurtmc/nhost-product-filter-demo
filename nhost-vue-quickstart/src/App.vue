@@ -19,25 +19,30 @@ import { nhost } from "./lib/nhost"
 //`;
 const getPumpsQueryV2 = `
 query GetPumps {
-  Pumps_v2(limit: 10, where: {PRESSURE_BAR: {_gte: "0", _lte: "100"}}) {
-    CC_STROKE
-    FLOAT_SWITCH
-    FLOW_L_H
-    HEAD_O_RING_EP
-    HEAD_O_RING_FP
-    HEAD_PP_SEAL_EP
-    HEAD_PVDF_SEAL_EP
-    HEAD_PVDF_SEAL_FP
-    INPUT
-    INPUT_TYPE
-    PRESSURE_BAR
-    PUMP_HEAD_CODE
-    PUMP_SERIES
-    STROKE_LENGTH_ADJ
-    STROKE_SPEED_ADJ
-    TUBE_SIZE_ID_X_OD
-    diaphragm
-    model
+  Pumps_v2(
+    limit: 10,
+    where: {
+      PRESSURE_BAR: {_gte: "0", _lte: "100"},
+      CC_STROKE: {_gte: "0", _lte: "2"}
+    }) {
+      CC_STROKE
+      FLOAT_SWITCH
+      FLOW_L_H
+      HEAD_O_RING_EP
+      HEAD_O_RING_FP
+      HEAD_PP_SEAL_EP
+      HEAD_PVDF_SEAL_EP
+      HEAD_PVDF_SEAL_FP
+      INPUT
+      INPUT_TYPE
+      PRESSURE_BAR
+      PUMP_HEAD_CODE
+      PUMP_SERIES
+      STROKE_LENGTH_ADJ
+      STROKE_SPEED_ADJ
+      TUBE_SIZE_ID_X_OD
+      diaphragm
+      model
   }
   files {
     id
@@ -46,28 +51,33 @@ query GetPumps {
 }
 `;
 
-function getQuery(pressureBar: int[]) {
+function getQuery(pressureBar: int[], ccStroke: int[]) {
 return `
 query GetPumps {
-  Pumps_v2(limit: 10, where: {PRESSURE_BAR: {_gte: "${pressureBar[0]}", _lte: "${pressureBar[1]}"}}) {
-    CC_STROKE
-    FLOAT_SWITCH
-    FLOW_L_H
-    HEAD_O_RING_EP
-    HEAD_O_RING_FP
-    HEAD_PP_SEAL_EP
-    HEAD_PVDF_SEAL_EP
-    HEAD_PVDF_SEAL_FP
-    INPUT
-    INPUT_TYPE
-    PRESSURE_BAR
-    PUMP_HEAD_CODE
-    PUMP_SERIES
-    STROKE_LENGTH_ADJ
-    STROKE_SPEED_ADJ
-    TUBE_SIZE_ID_X_OD
-    diaphragm
-    model
+  Pumps_v2(
+    limit: 10,
+    where: {
+      PRESSURE_BAR: {_gte: "${pressureBar[0]}", _lte: "${pressureBar[1]}"},
+      CC_STROKE: {_gte: "${ccStroke[0]}", _lte: "${ccStroke[1]}"}
+    }) {
+      CC_STROKE
+      FLOAT_SWITCH
+      FLOW_L_H
+      HEAD_O_RING_EP
+      HEAD_O_RING_FP
+      HEAD_PP_SEAL_EP
+      HEAD_PVDF_SEAL_EP
+      HEAD_PVDF_SEAL_FP
+      INPUT
+      INPUT_TYPE
+      PRESSURE_BAR
+      PUMP_HEAD_CODE
+      PUMP_SERIES
+      STROKE_LENGTH_ADJ
+      STROKE_SPEED_ADJ
+      TUBE_SIZE_ID_X_OD
+      diaphragm
+      model
   }
   files {
     id
@@ -79,6 +89,7 @@ query GetPumps {
 
 var flowRate = [0, 1000];
 var pressureBar = [0, 100];
+var ccStroke = [0, 2];
 var power = [0, 1000];
 var weight = [0, 1000];
 var submersible = false;
@@ -108,7 +119,7 @@ onMounted(() => {
 })
 
 async function updatePumps() {
-  const { data } = await nhost.graphql.request(getQuery(pressureBar))
+  const { data } = await nhost.graphql.request(getQuery(pressureBar, ccStroke))
   appendPublicUrl(data)
   pumps.value = data.Pumps_v2
 }
@@ -129,6 +140,7 @@ function marks(val) {
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item"><p>Pressure BAR</p><vue-slider v-model="pressureBar" :enable-cross="false" @change="updatePumps" :min="0" :max="100" :interval="1"  ></vue-slider></li>
+        <li class="list-group-item"><p>CC / Stroke</p><vue-slider v-model="ccStroke" :enable-cross="false" @change="updatePumps" :min="0" :max="2" :interval="0.05"  ></vue-slider></li>
         <!--<li class="list-group-item"><p>Flow rate</p><vue-slider v-model="flowRate" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks" ></vue-slider></li>
         <li class="list-group-item"><p>Power</p><vue-slider v-model="power" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks"></vue-slider></li>
         <li class="list-group-item"><p>Weight</p><vue-slider v-model="weight" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks"></vue-slider></li>
