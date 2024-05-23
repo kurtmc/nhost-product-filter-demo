@@ -141,6 +141,9 @@ enabled = false
 [postgres]
 version = '14.11-20240515-1'
 
+[postgres.resources]
+enablePublicAccess = true
+
 [provider]
 
 [storage]
