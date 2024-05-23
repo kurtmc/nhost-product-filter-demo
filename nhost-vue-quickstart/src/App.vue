@@ -88,7 +88,7 @@ query GetPumps {
 }
 
 var flowRate = [0, 1000];
-var pressureBar = [0, 100];
+var pressureBar = [0, 25];
 var ccStroke = [0, 2];
 var power = [0, 1000];
 var weight = [0, 1000];
@@ -139,7 +139,7 @@ function marks(val) {
         Specifications
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item"><p>Pressure BAR</p><vue-slider v-model="pressureBar" :enable-cross="false" @change="updatePumps" :min="0" :max="100" :interval="1"  ></vue-slider></li>
+        <li class="list-group-item"><p>Pressure BAR</p><vue-slider v-model="pressureBar" :enable-cross="false" @change="updatePumps" :min="0" :max="25" :interval="1"  ></vue-slider></li>
         <li class="list-group-item"><p>CC / Stroke</p><vue-slider v-model="ccStroke" :enable-cross="false" @change="updatePumps" :min="0" :max="2" :interval="0.05"  ></vue-slider></li>
         <!--<li class="list-group-item"><p>Flow rate</p><vue-slider v-model="flowRate" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks" ></vue-slider></li>
         <li class="list-group-item"><p>Power</p><vue-slider v-model="power" :enable-cross="false" @change="updatePumps" :min="0" :max="1000" :interval="10" :marks="marks"></vue-slider></li>
